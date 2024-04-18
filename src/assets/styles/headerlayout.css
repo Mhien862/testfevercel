@@ -1,0 +1,74 @@
+.img {
+    margin-right: 12px;
+    width: 32px;
+    height: 32px;
+    border-radius: 32px;
+    background: url(<path-to-image>), lightgray 50% / cover no-repeat;
+  }
+  
+  .dropdown p {
+    margin-left: 12px;
+    margin-right: 20px;
+  }
+  
+  .dropdown {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    float: right;
+    height: 64px;
+    min-width: 96px;
+    line-height: 64px;
+    margin-right: 20px;
+  }
+  
+  .dropdown:hover {
+    cursor: pointer;
+  }
+  
+  .name{
+    color:#111;
+    font-family: Poppins;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 22px;
+  }
+  
+  .admin{
+    padding-top: 16px;
+  }
+  
+  .dropAdmin {
+    position: absolute;
+    top: 100%;
+    background-color: #fff;
+    width: 142px;
+    height: 150px;
+    left: 17%;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-right: none;
+    display: none;
+    z-index: 999;
+  }
+  
+  .dropAdmin ul li {
+    list-style-type: none;
+    width: 100%;
+  }
+  
+  .dropAdmin ul li:hover {
+    cursor: pointer;
+    color: rgb(33, 207, 207);
+  }
+  
+  .dropdown:hover .dropAdmin {
+    display: block;
+  }
+
+  .dropAdmin ul .logout-profile:hover{
+    color: red;
+  }
