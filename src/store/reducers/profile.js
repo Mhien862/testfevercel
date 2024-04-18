@@ -1,40 +1,34 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axiosInstance from '../../services/axios.service';
+// import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+// import axiosInstance from "../../services/axios.service";
 
-const initialState = {
-  profile: null,
-  profiles: [],
-};
+// const initialState = {
+//   profile: null,
+//   profiles: [],
+// };
 
-const token = localStorage.getItem('accessToken') ?? '';
+// // export const getProfile = createAsyncThunk("profile/getProfile", async () => {
+// //   try {
+// //     const result = await axiosInstance.get("auth/profile");
+// //     return result.data.data;
+// //   } catch (error) {
+// //     console.log(error);
+// //   }
+// // });
 
-localStorage.setItem('accessToken', token);
+// // export const profileSlice = createSlice({
+// //   name: "profile",
+// //   initialState,
+// //   reducers: {},
+// //   extraReducers: (builder) => {
+// //     builder.addCase(getProfile.fulfilled, (state, actions) => {
+// //       state.profile = actions.payload;
+// //     });
+// //   },
+// // });
 
-export const getProfile = createAsyncThunk('profile/getProfile', async () => {
-  try {
-    const result = await axiosInstance.get('auth/profile');
-    return result.data.data;
-  } catch (error) {
-    console.log(error);
-  }
-});
+// // Action creators are generated for each case reducer function
+// // export const { editProfile, addProfile } = profileSlice.actions;
 
-export const profileSlice = createSlice({
-  name: 'profile',
-  initialState,
-  reducers: {
-    
-  },
-  extraReducers: (builder) => {
-    builder.addCase(getProfile.fulfilled, (state, actions) => {
-      state.profile = actions.payload;
-    });
-  },
-});
+// const profileReducer = profileSlice.reducer;
 
-// Action creators are generated for each case reducer function
-// export const { editProfile, addProfile } = profileSlice.actions;
-
-const profileReducer = profileSlice.reducer;
-
-export default profileReducer;
+// export default profileReducer;

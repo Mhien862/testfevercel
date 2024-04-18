@@ -1,25 +1,26 @@
-import axios from 'axios'
+import axios from "axios";
 
 const axiosInstance = axios.create({
-    baseURL: 'http://localhost:1000/',
-    withCredentials:true
-
- 
+  baseURL: "https://test-u3kx.onrender.com",
+  // baseURL: "http://localhost:1000",
+  // withCredentials: true,
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  },
 });
 
 axiosInstance.interceptors.request.use(
   function (config) {
     // Do something before request is sent
-    // const token = localStorage.getItem('accessToken') ?? '';
-
-
-    // config.headers.Authorization = `Bearer ${token}`
+    const token = JSON.parse(localStorage.getItem("userProfile")) ?? "";
+    config.headers.Authorization = token.accessToken;
     return config;
   },
   function (error) {
     // Do something with request error
     return Promise.reject(error);
-  },
+  }
 );
 
 export default axiosInstance;

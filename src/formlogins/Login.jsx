@@ -2,26 +2,15 @@ import { Button, Form, Input, notification } from "antd";
 import "../assets/styles/login.css";
 import { loginAPI } from "../services/UserService";
 import { Link, useNavigate } from "react-router-dom";
-import { CookiesProvider, useCookies } from "react-cookie";
-import {
-  SmileOutlined,
-  CheckCircleOutlined,
-  WarningOutlined,
-} from "@ant-design/icons";
+import { CheckCircleOutlined, WarningOutlined } from "@ant-design/icons";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [cookies, setCookie] = useCookies(["user"]);
   const onFinish = async (values) => {
     try {
-      let res = await loginAPI(values.email, values.password);
-      setCookie("user", values, { path: "/" });
-
-      if (res && res.accessToken)
-        localStorage.setItem("accessToken", res.accessToken);
-
+      await loginAPI(values.email, values.password);
       openNotification();
-      navigate("/createuser");
+      navigate("/");
     } catch (error) {
       console.log(222, error);
       notification.open({

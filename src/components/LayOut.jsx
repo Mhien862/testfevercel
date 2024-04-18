@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  GroupOutlined,
   UserOutlined,
   IdcardOutlined,
   GithubOutlined,
@@ -13,7 +12,6 @@ import { Layout, Menu, Button, theme } from "antd";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import "../assets/styles/headerlayout.css";
 import axiosInstance from "../services/axios.service";
-
 const { Header, Sider } = Layout;
 
 const LayOut = () => {
@@ -22,13 +20,18 @@ const LayOut = () => {
   });
 
   const fetchService = async () => {
-    const response = await axiosInstance.get("/profile", {});
-    setProfile(response.data);
-    console.log(response);
+    try {
+      const getId = localStorage.getItem("userProfile");
+      const response = await axiosInstance.get("/profile", {
+        _id: JSON.parse(getId)._id,
+      });
+      setProfile(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
-    // call API
     fetchService();
   }, []);
 
