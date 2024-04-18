@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const axiosInstance = axios.create({
-  baseURL: 'https://enterprise-web-software-development-dryr.onrender.com/',
+  baseURL: 'https://enterprise-web-software-development-dryr.onrender.com',
   withCredentials: true
 });
 
