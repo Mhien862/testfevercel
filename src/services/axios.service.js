@@ -1,8 +1,10 @@
 import axios from 'axios'
 
 const axiosInstance = axios.create({
-  baseURL: 'https://enterprise-web-software-development-dryr.onrender.com',
-  withCredentials: true
+    baseURL: 'http://localhost:1000/',
+    withCredentials:true
+
+ 
 });
 
 axiosInstance.interceptors.request.use(
