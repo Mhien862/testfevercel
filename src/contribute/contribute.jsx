@@ -42,8 +42,7 @@ const PostForm = () => {
     fileList.forEach((file) => {
       formData.append("files", file);
     });
-    formData.append("Title", values.Title);
-    formData.append("Content", values.Content);
+
     formData.append("Faculty", values.faculty);
     formData.append("isSelected", isSelected); // Thêm isSelected vào formData
     formData.append("eventId", eventId); // Append eventId to formData
