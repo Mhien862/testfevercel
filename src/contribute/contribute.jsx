@@ -52,7 +52,7 @@ const PostForm = () => {
       // Replace the following with your actual API call
       console.log("Posting data:", values);
       // Example API call using fetch
-      const response = await fetch("http://localhost:1000/upload", {
+      const response = await fetch("https://test-u3kx.onrender.com/upload", {
         method: "POST",
         credentials: "include",
         body: formData,
