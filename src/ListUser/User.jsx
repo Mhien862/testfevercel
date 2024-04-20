@@ -123,7 +123,7 @@ const User = () => {
 
   const deleteService = async (id) => {
     try {
-      await axiosInstance.delete(`/user-list/${id}`);
+      await axiosInstance.delete(`/user-list/?userId=${id}`);
       notification.open({
         message: "Delete Success",
         icon: <CheckCircleOutlined style={{ color: "#00ff66" }} />,
