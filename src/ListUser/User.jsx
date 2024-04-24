@@ -87,7 +87,11 @@ const User = () => {
   const [value, setValue] = useState("");
 
   const fetchService = async () => {
-    const response = await axiosInstance.get("/user-list");
+    const response = await axiosInstance.get("/user-list", {
+      headers: {
+        user-id: 
+      }
+    });
     setService(response.data);
   };
 
