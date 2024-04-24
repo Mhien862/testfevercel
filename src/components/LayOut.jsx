@@ -19,21 +19,21 @@ const LayOut = () => {
     username: "",
   });
 
-  const fetchService = async () => {
-    try {
-      const getId = localStorage.getItem("userProfile");
-      const response = await axiosInstance.get("/profile", {
-        _id: JSON.parse(getId)._id,
-      });
-      setProfile(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const fetchService = async () => {
+  //   try {
+  //     const getId = localStorage.getItem("userProfile");
+  //     const response = await axiosInstance.get("/profile", {
+  //       _id: JSON.parse(getId)._id,
+  //     });
+  //     setProfile(response.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchService();
-  }, []);
+  // useEffect(() => {
+  //   fetchService();
+  // }, []);
 
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
