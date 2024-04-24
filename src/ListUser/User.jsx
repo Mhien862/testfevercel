@@ -3,13 +3,8 @@ import { useEffect, useState } from "react";
 import axiosInstance from "../services/axios.service";
 import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import Search from "antd/es/input/Search";
-import {
-  SmileOutlined,
-  CheckCircleOutlined,
-  WarningOutlined,
-} from "@ant-design/icons";
+import { CheckCircleOutlined, WarningOutlined } from "@ant-design/icons";
 
 const { Option: AntdOption } = Select;
 
@@ -53,22 +48,24 @@ const User = () => {
       title: "Action",
       dataIndex: "action",
       key: "action",
-      render: (_, param2) => (
-        <div>
-          <Link to={`/detailservice/${param2.id}`}>
-            <EyeOutlined />
-          </Link>
-          <Button
-            type="link"
-            onClick={() => {
-              navigate(`/user/edit/${param2?._id}`);
-            }}
-          >
-            <EditOutlined />
-          </Button>
-          <DeleteOutlined onClick={() => deleteService(param2._id)} />
-        </div>
-      ),
+      render: (_, param2) => {
+        return (
+          <div>
+            <Link to={`/detailservice/${param2.id}`}>
+              <EyeOutlined />
+            </Link>
+            <Button
+              type="link"
+              onClick={() => {
+                navigate(`/user/edit/${param2._id}`);
+              }}
+            >
+              <EditOutlined />
+            </Button>
+            <DeleteOutlined onClick={() => deleteService(param2._id)} />
+          </div>
+        );
+      },
     },
   ];
 
@@ -87,10 +84,11 @@ const User = () => {
   const [value, setValue] = useState("");
 
   const fetchService = async () => {
+    const { _id } = JSON.parse(localStorage.getItem("userProfile"));
     const response = await axiosInstance.get("/user-list", {
       headers: {
-        user-id: 
-      }
+        "user-id": _id,
+      },
     });
     setService(response.data);
   };
@@ -121,7 +119,7 @@ const User = () => {
 
   useEffect(() => {
     fetchService();
-  }, [query]);
+  }, []);
 
   const deleteService = async (id) => {
     try {

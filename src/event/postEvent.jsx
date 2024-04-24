@@ -1,25 +1,13 @@
 import { useState } from "react";
-import {
-  Form,
-  Input,
-  Button,
-  Upload,
-  Radio,
-  Checkbox,
-  notification,
-} from "antd";
+import { Form, Button, Upload, Radio, Checkbox, notification } from "antd";
 import { InboxOutlined, UploadOutlined } from "@ant-design/icons";
-import {
-  SmileOutlined,
-  CheckCircleOutlined,
-  WarningOutlined,
-} from "@ant-design/icons";
+import { CheckCircleOutlined } from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router-dom";
-const { TextArea } = Input;
+import { uploadImageEventAPI } from "../services/EventService";
 
 const PostForm = () => {
   const [loading, setLoading] = useState(false);
-  const [fileList, setFileList] = useState([]);
+  const [fileList, setFileList] = useState();
   const [isSelected, setIsSelected] = useState(false); // Thêm isSelected state
   const normFile = (e) => {
     console.log("Upload event:", e);
@@ -36,14 +24,22 @@ const PostForm = () => {
   };
 
   const onFinish = async (values) => {
-    console.log(fileList);
     const formData = new FormData();
-    fileList.forEach((file) => {
-      formData.append("files", file);
+    const { _id } = JSON.parse(localStorage.getItem("userProfile"));
+    // fileList.forEach(c => {
+    //   formData.append("files", file);
+    // });
+
+    values.upload.forEach((i) => {
+      console.log(i);
+      formData.append("files", i.originFileObj);
     });
+
+    console.log();
 
     formData.append("Faculty", values.faculty);
     formData.append("isSelected", isSelected); // Thêm isSelected vào formData
+    formData.append("_id", _id);
     setLoading(true);
     try {
       // Here you can make an API call to post the data to the social network
@@ -55,12 +51,10 @@ const PostForm = () => {
       });
       console.log(event);
 
-      const response = await fetch(`http://localhost:1000/upload/${eventId}`, {
-        method: "POST",
-        credentials: "include",
-        body: formData,
-      });
-      if (response.ok) {
+      const response = await uploadImageEventAPI(eventId, formData);
+      console.log(response);
+
+      if (response) {
         console.log("Posted successfully");
         navigate("/listcontribute");
         notification.open({
@@ -84,6 +78,11 @@ const PostForm = () => {
   };
 
   const props = {
+    onChange({ file, fileList }) {
+      if (file.status !== "uploading") {
+        console.log("file, fileList", file, fileList);
+      }
+    },
     onRemove: (file) => {
       const index = fileList.indexOf(file);
       const newFileList = fileList.slice();
@@ -152,7 +151,6 @@ const PostForm = () => {
           </Upload.Dragger>
         </Form.Item>
       </Form.Item>
-
       <Form.Item>
         <Button block type="primary" htmlType="submit" loading={loading}>
           Post

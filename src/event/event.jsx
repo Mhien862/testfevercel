@@ -211,8 +211,11 @@ const Event = () => {
   const fetchEvents = async () => {
     handleRefetch();
     try {
+      const { _id } = JSON.parse(localStorage.getItem("userProfile"));
       const response = await axiosInstance.get("/event", {
-        params: query,
+        headers: {
+          "user-id": _id,
+        },
       });
       setEvents(response.data.events);
       setPagination(response.data.pagination);
@@ -305,7 +308,7 @@ const Event = () => {
         }
         return (
           <div>
-            <Link to={`/event/detail/${param2?._id}`} disabled={isCreate}>
+            <Link to={`/event/detail/${param2._id}`} disabled={isCreate}>
               <EyeOutlined />
             </Link>
             <Button
@@ -338,7 +341,7 @@ const Event = () => {
               <Button
                 type="primary"
                 onClick={() => {
-                  navigate(`/event/post/${param2?._id}`);
+                  navigate(`/event/post/${param2._id}`);
                 }}
               >
                 Upload
