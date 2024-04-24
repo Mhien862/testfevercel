@@ -87,9 +87,7 @@ const User = () => {
   const [value, setValue] = useState("");
 
   const fetchService = async () => {
-    const response = await axiosInstance.get("/user-list", {
-      params: query,
-    });
+    const response = await axiosInstance.get("/user-list");
     setService(response.data);
   };
 
