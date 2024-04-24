@@ -1,19 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { 
-  Button, 
-  Col, 
-  Row, 
-  Select, 
-  Space, 
-  Table, 
+import { useEffect, useState } from "react";
+import {
+  Button,
+  Col,
+  Row,
+  Select,
+  Space,
+  Table,
   notification,
-  Form, 
-  Input, 
+  Form,
+  Input,
   DatePicker,
 } from "antd";
 import axiosInstance from "../services/axios.service";
 import { createEventAPI, editEventAPI } from "../services/EventService";
-import { DeleteOutlined, EditOutlined, EyeOutlined, CheckOutlined, CloseOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  EyeOutlined,
+  CheckOutlined,
+  CloseOutlined,
+} from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
 import Search from "antd/es/input/Search";
 import { CheckCircleOutlined, WarningOutlined } from "@ant-design/icons";
@@ -26,74 +32,82 @@ const Event = () => {
 
   const [form] = Form.useForm();
   const [isCreate, setIsCreate] = useState(false);
-  const [editId, setEditId] = useState('');
-  const [isRefetch, setIsRefetch] = useState(false)
+  const [editId, setEditId] = useState("");
+  const [isRefetch, setIsRefetch] = useState(false);
 
   const handleCreate = () => {
-    setEditId('')
-    setIsCreate(true)
-    const formInput = (children, dataIndex) => 
-    (<Form.Item
-      name={dataIndex}
-      style={{
-        margin: 0,
-      }}
-      rules={[
-        {
-          required: true,
-          message: `Please Input ${dataIndex}!`,
-        },
-      ]}>
+    setEditId("");
+    setIsCreate(true);
+    const formInput = (children, dataIndex) => (
+      <Form.Item
+        name={dataIndex}
+        style={{
+          margin: 0,
+        }}
+        rules={[
+          {
+            required: true,
+            message: `Please Input ${dataIndex}!`,
+          },
+        ]}
+      >
         {children}
-    </Form.Item>)
+      </Form.Item>
+    );
     const newData = {
-      eventName: formInput(<Input style={{width: 80}}/>, 'eventName'),
-      firstClosureDate: formInput(<DatePicker style={{width: 160}} />, 'firstClosureDate'),
-      finalClosureDate:  formInput(<DatePicker style={{width: 160}} />, 'finalClosureDate'),
-      academicYear: formInput(<Input style={{width: 160}}/>, 'academicYear'),
-      faculty: formInput(<Input style={{width: 80}}/>, 'faculty'),
+      eventName: formInput(<Input style={{ width: 80 }} />, "eventName"),
+      firstClosureDate: formInput(
+        <DatePicker style={{ width: 160 }} />,
+        "firstClosureDate"
+      ),
+      finalClosureDate: formInput(
+        <DatePicker style={{ width: 160 }} />,
+        "finalClosureDate"
+      ),
+      academicYear: formInput(<Input style={{ width: 160 }} />, "academicYear"),
+      faculty: formInput(<Input style={{ width: 80 }} />, "faculty"),
       isCreate: true,
-    }
-    setEvents([newData, ...events])
-  }
+    };
+    setEvents([newData, ...events]);
+  };
 
   const handleEdit = (record) => {
-    handleRefetch()
+    handleRefetch();
     form.setFieldsValue({
       ...record,
-      firstClosureDate: '', // datepicker input is string not timestamp  
-      finalClosureDate:  '', // datepicker input is string not timestamp 
+      firstClosureDate: "", // datepicker input is string not timestamp
+      finalClosureDate: "", // datepicker input is string not timestamp
     });
-    setEditId(record._id)
-  }
+    setEditId(record._id);
+  };
 
   const handleRefetch = () => {
     form.setFieldsValue({
-      eventName: '',
-      academicYear: '',
-      faculty: '',
-      firstClosureDate: '',
-      finalClosureDate:  '',
+      eventName: "",
+      academicYear: "",
+      faculty: "",
+      firstClosureDate: "",
+      finalClosureDate: "",
     });
-    setIsCreate(false)
-    setEditId('')
-  }
+    setIsCreate(false);
+    setEditId("");
+  };
 
   const handleRemove = (index) => {
-    if(!editId) {
+    if (!editId) {
       setEvents((pre) => {
-        pre.splice(index, 1)
-        return [...pre]
-      })
+        pre.splice(index, 1);
+        return [...pre];
+      });
     }
-    handleRefetch()
-  }
+    handleRefetch();
+  };
 
   const handleSave = async (isCreate, id) => {
     const newData = await form.validateFields();
     if (!!isCreate) {
       try {
-        await createEventAPI(newData)
+        await createEventAPI(newData);
         notification.open({
           message: "Create Success",
           icon: (
@@ -104,7 +118,7 @@ const Event = () => {
             />
           ),
         });
-        setIsRefetch(true)
+        setIsRefetch(true);
       } catch (error) {
         notification.open({
           message: error.response.data.message,
@@ -119,7 +133,7 @@ const Event = () => {
       }
     } else {
       try {
-        await editEventAPI({id, ...newData})
+        await editEventAPI({ id, ...newData });
         notification.open({
           message: "Edit Success",
           icon: (
@@ -130,10 +144,10 @@ const Event = () => {
             />
           ),
         });
-        setIsRefetch(true)
-        handleRefetch()
+        setIsRefetch(true);
+        handleRefetch();
       } catch (error) {
-        console.log(error.response.data.message)
+        console.log(error.response.data.message);
         notification.open({
           message: error.response.data.message,
           icon: (
@@ -146,7 +160,7 @@ const Event = () => {
         });
       }
     }
-  }
+  };
 
   const EditableCell = ({
     editing,
@@ -159,10 +173,11 @@ const Event = () => {
     ...restProps
   }) => {
     const inputNode = () => {
-      if (dataIndex === 'academicYear') return <div>{children}</div>
-      else if (['firstClosureDate', 'finalClosureDate'].includes(dataIndex)) return <DatePicker style={{width: 160}} />
-      else return <Input style={{width: 80}}/>
-    }
+      if (dataIndex === "academicYear") return <div>{children}</div>;
+      else if (["firstClosureDate", "finalClosureDate"].includes(dataIndex))
+        return <DatePicker style={{ width: 160 }} />;
+      else return <Input style={{ width: 80 }} />;
+    };
     return (
       <td {...restProps}>
         {editing ? (
@@ -194,7 +209,7 @@ const Event = () => {
   });
 
   const fetchEvents = async () => {
-    handleRefetch()
+    handleRefetch();
     try {
       const response = await axiosInstance.get("/event", {
         params: query,
@@ -204,7 +219,7 @@ const Event = () => {
     } catch (error) {
       console.error("Error fetching events:", error);
     }
-    setIsRefetch(false)
+    setIsRefetch(false);
   };
 
   const onTableChange = (values) => {
@@ -271,26 +286,24 @@ const Event = () => {
     {
       title: "Action",
       key: "action",
-      
+
       render: (_, param2, index) => {
         if (param2?.isCreate || param2?._id === editId) {
+          return (
+            <div>
+              <Button
+                type="link"
+                onClick={() => handleSave(param2?.isCreate, param2._id)}
+              >
+                <CheckOutlined />
+              </Button>
+              <Button type="link" onClick={() => handleRemove(index)}>
+                <CloseOutlined />
+              </Button>
+            </div>
+          );
+        }
         return (
-          <div>
-            <Button
-              type="link"
-              onClick={() => handleSave(param2?.isCreate, param2._id)}
-            >
-              <CheckOutlined />
-            </Button>
-            <Button
-              type="link"
-              onClick={() => handleRemove(index)}
-            >
-              <CloseOutlined />
-            </Button>
-          </div>
-        )}
-      return (
           <div>
             <Link to={`/event/detail/${param2?._id}`} disabled={isCreate}>
               <EyeOutlined />
@@ -311,7 +324,8 @@ const Event = () => {
               <DeleteOutlined />
             </Button>
           </div>
-      )},
+        );
+      },
     },
     {
       title: "Upload",
@@ -320,20 +334,19 @@ const Event = () => {
       render: (_, param2) => {
         if (!param2?.isCreate) {
           return (
-          <div>
-            <Button
-              type="primary"
-              onClick={() => {
-                navigate(`/event/post/${param2?._id}`);
-              }}
-            >
-              Upload
-            </Button>
-          </div>
-          )}
-        return (
-          <div></div>
-        )
+            <div>
+              <Button
+                type="primary"
+                onClick={() => {
+                  navigate(`/event/post/${param2?._id}`);
+                }}
+              >
+                Upload
+              </Button>
+            </div>
+          );
+        }
+        return <div></div>;
       },
     },
   ];
@@ -346,7 +359,7 @@ const Event = () => {
       ...col,
       onCell: (record) => ({
         record,
-        inputType: 'text',
+        inputType: "text",
         dataIndex: col.dataIndex,
         title: col.title,
         editing: record._id === editId,
@@ -380,7 +393,9 @@ const Event = () => {
             </Space>
           </Col>
           <Col span={6} style={{ textAlign: "right" }}>
-          <Button disabled={isCreate || !!editId} onClick={handleCreate}>Create Event</Button>
+            <Button disabled={isCreate || !!editId} onClick={handleCreate}>
+              Create Event
+            </Button>
           </Col>
         </Row>
       </div>

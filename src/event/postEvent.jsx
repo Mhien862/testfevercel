@@ -14,8 +14,7 @@ import {
   CheckCircleOutlined,
   WarningOutlined,
 } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
-
+import { useNavigate, useLocation } from "react-router-dom";
 const { TextArea } = Input;
 
 const PostForm = () => {
@@ -30,6 +29,8 @@ const PostForm = () => {
     return e?.fileList;
   };
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+
   const onChange = (e) => {
     console.log(`radio checked:${e.target.value}`);
   };
@@ -49,7 +50,12 @@ const PostForm = () => {
       // Replace the following with your actual API call
       console.log("Posting data:", values);
       // Example API call using fetch
-      const response = await fetch("http://localhost:1000/upload", {
+      const eventId = pathname.split("/").find((item, index) => {
+        if (index === 3) return item;
+      });
+      console.log(event);
+
+      const response = await fetch(`http://localhost:1000/upload/${eventId}`, {
         method: "POST",
         credentials: "include",
         body: formData,
