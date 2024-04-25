@@ -18,16 +18,16 @@ const getProfile = () => {
   //     .then(json => setData(json))
   // },[]);
 
-  const fetchService = async () => {
-    const response = await axiosInstance.get("/profile", {});
-    setProfile(response.data);
-    console.log(response);
-  };
+  // const fetchService = async () => {
+  //   const response = await axiosInstance.get("/profile", {});
+  //   setProfile(response.data);
+  //   console.log(response);
+  // };
 
-  useEffect(() => {
-    // call API
-    fetchService();
-  }, []);
+  // useEffect(() => {
+  //   // call API
+  //   fetchService();
+  // }, []);
 
   const navigate = useNavigate();
   const changePassword = () => {
