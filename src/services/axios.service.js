@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "https://enterprise-web-software-development.onrender.com",
-  //baseURL: "http://localhost:1000",
+   baseURL: "https://enterprise-web-software-development.onrender.com",
+  // baseURL: "http://localhost:1000",
 
   // withCredentials: true,
   headers: {
@@ -16,6 +16,7 @@ axiosInstance.interceptors.request.use(
     // Do something before request is sent
     const token = JSON.parse(localStorage.getItem("userProfile")) ?? "";
     config.headers.Authorization = token.accessToken;
+    config.headers["user-id"] = token._id;
     return config;
   },
   function (error) {
