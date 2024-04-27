@@ -16,6 +16,7 @@ axiosInstance.interceptors.request.use(
     // Do something before request is sent
     const token = JSON.parse(localStorage.getItem("userProfile")) ?? "";
     config.headers.Authorization = token.accessToken;
+    config.headers["user-id"] = token._id;
     return config;
   },
   function (error) {

@@ -1,31 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { Button, Card, List, Tooltip, Input, Avatar, Image } from "antd";
-import { CommentOutlined, LikeOutlined } from "@ant-design/icons";
+import { Button, Card, Image, List, Tooltip } from "antd";
 import axiosInstance from "../services/axios.service";
-import { useNavigate } from "react-router-dom";
-
-const { Search } = Input;
+import { CommentOutlined, LikeOutlined } from "@ant-design/icons";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const App = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axiosInstance.get(
-          "http://localhost:1000/contribution"
-        );
-        setData(response.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
     fetchData();
   }, []);
 
-  const navigate = useNavigate();
+  const fetchData = async () => {
+    try {
+      const response = await axiosInstance.get("contribution");
+      setData(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
+  const navigate = useNavigate();
   const handleCreate = () => {
     navigate("/contribute");
   };
@@ -46,89 +41,50 @@ const App = () => {
     });
   };
 
-  const renderFile = (file) => {
-    if (file.mimetype.startsWith("image/")) {
-      return (
-        <Image
-          src={`http://localhost:1000/contribution-img/${file.filename}`}
-          style={{ maxWidth: "100%", marginBottom: 10 }}
-        />
-      );
-    } else if (file.mimetype === "application/msword") {
-      return (
-        <a
-          href={`http://localhost:1000/contribution-file/${file.filename}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {file.originalname}
-        </a>
-      );
-    } else {
-      return null; // You can add support for other file types as needed
-    }
-  };
-
   const renderCards = () => {
     return data.map((item, index) => (
-      <Card key={item._id} style={{ marginBottom: 20 }}>
+      <Card key={item._id} title={item.faculty}>
+        {/* Username */}
+        <p>USERNAME: {item.username}</p>
+
+        {/* Files */}
         <List
-          itemLayout="vertical"
-          dataSource={[item]}
-          renderItem={(post) => (
-            <List.Item
-              actions={[
-                <Tooltip key="like" title={post.liked ? "Unlike" : "Like"}>
-                  <Button
-                    icon={<LikeOutlined />}
-                    type={post.liked ? "primary" : "default"}
-                    onClick={() => handleLike(index)}
-                  >
-                    {post.liked ? "Liked" : "Like"}
-                  </Button>
-                </Tooltip>,
-                <Tooltip
-                  key="comment"
-                  title={post.commented ? "Hide comment" : "Comment"}
-                >
-                  <Button
-                    icon={<CommentOutlined />}
-                    type={post.commented ? "primary" : "default"}
-                    onClick={() => handleComment(index)}
-                  >
-                    {post.commented ? "Commented" : "Comment"}
-                  </Button>
-                </Tooltip>,
-              ]}
-            >
+          itemLayout="horizontal"
+          dataSource={item.files}
+          renderItem={(file) => (
+            <List.Item>
               <List.Item.Meta
-                avatar={<Avatar src={item.avatar} />}
-                title={<span>{item.username}</span>}
-                description={item.faculty}
+                avatar={
+                  file.mimetype.startsWith("image/") ? (
+                    <Image
+                      src={file.path}
+                      // src={`http://localhost:1000/contribution-img/${file.filename}`} // Replace with image URL provider
+                      width={200}
+                    />
+                  ) : null
+                }
+                title={file.originalname}
               />
-              <div style={{ marginBottom: 10 }}>{item.content}</div>
-              {item.files && item.files.length > 0 && (
-                <div>
-                  {item.files.map((file, fileIndex) => (
-                    <div key={fileIndex} style={{ marginBottom: 10 }}>
-                      {renderFile(file)}
-                    </div>
-                  ))}
-                </div>
-              )}
+              <Tooltip title={item.liked ? "Unlike" : "Like"}>
+                <Button
+                  icon={<LikeOutlined />}
+                  type={item.liked ? "primary" : "default"}
+                  onClick={() => handleLike(index)}
+                >
+                  {item.liked ? "Liked" : "Like"}
+                </Button>
+              </Tooltip>
+              <Tooltip title={item.commented ? "Hide comment" : "Comment"}>
+                <Button
+                  icon={<CommentOutlined />}
+                  type={item.commented ? "primary" : "default"}
+                  onClick={() => handleComment(index)}
+                >
+                  {item.commented ? "Commented" : "Comment"}
+                </Button>
+              </Tooltip>
               {item.commented && (
-                <List
-                  dataSource={item.comments}
-                  renderItem={(comment) => (
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar src={comment.avatar} />}
-                        title={comment.username}
-                        description={comment.content}
-                      />
-                    </List.Item>
-                  )}
-                />
+                <Comment content={<p>Your comment content here...</p>} />
               )}
             </List.Item>
           )}
@@ -138,16 +94,8 @@ const App = () => {
   };
 
   return (
-    <div style={{ padding: "20px 40px" }}>
-      <div style={{ marginBottom: 20 }}>
-        <Search placeholder="Search posts..." enterButton />
-      </div>
-      <Button
-        onClick={handleCreate}
-        block
-        type="primary"
-        style={{ marginBottom: 20 }}
-      >
+    <div>
+      <Button onClick={handleCreate} type="primary" block>
         New Post
       </Button>
       {renderCards()}
