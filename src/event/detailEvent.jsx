@@ -12,19 +12,9 @@ const App = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axiosInstance.get(`/event-by-id?eventId=${id}`);
-      const eventData = response.data.event;
-
-      const contributionDetails = await Promise.all(
-        eventData.contributions.map(async (contributionId) => {
-          const contributionResponse = await axiosInstance.get(
-            `/upload?contributionId=${contributionId}`
-          );
-          return contributionResponse.data.contribution;
-        })
-      );
-
-      setData(contributionDetails); // Combine event and contribution details
+      const response = await axiosInstance.get(`/event-by-id/${id}`);
+      const { contribution } = response.data;
+      setData(contribution); // Combine event and contribution details
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -72,10 +62,7 @@ const App = () => {
                 <List.Item.Meta
                   avatar={
                     file.mimetype.startsWith("image/") ? (
-                      <Image
-                        src={`http://localhost:1000/contribution-img/${file.filename}`} // Replace with image URL provider
-                        width={200}
-                      />
+                      <Image src={file.path} width={200} />
                     ) : file.mimetype === "application/msword" ? (
                       <Image
                         src="path_to_doc_icon" // Provide path to a doc icon image

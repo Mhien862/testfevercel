@@ -23,7 +23,7 @@ const resetAPI = async (token, password, confirmPassword) => {
 };
 
 const userAPI = async (username, email, password, roleName, facultyName) => {
-  const res = await axiosInstance.post("register ", {
+  const res = await axiosInstance.post("register", {
     username,
     email,
     password,

@@ -7,6 +7,7 @@ import { CheckCircleOutlined, WarningOutlined } from "@ant-design/icons";
 const Login = () => {
   const navigate = useNavigate();
   const onFinish = async (values) => {
+    if (!values.email || !values.password) return;
     try {
       await loginAPI(values.email, values.password);
       openNotification();

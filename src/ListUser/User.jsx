@@ -48,21 +48,21 @@ const User = () => {
       title: "Action",
       dataIndex: "action",
       key: "action",
-      render: (_, param2) => {
+      render: (_, param) => {
         return (
           <div>
-            <Link to={`/detailservice/${param2.id}`}>
+            <Link to={`/detailservice/${param.id}`}>
               <EyeOutlined />
             </Link>
             <Button
               type="link"
               onClick={() => {
-                navigate(`/user/edit/${param2._id}`);
+                navigate(`/user/edit/${param._id}`);
               }}
             >
               <EditOutlined />
             </Button>
-            <DeleteOutlined onClick={() => deleteService(param2._id)} />
+            <DeleteOutlined onClick={() => deleteService(param._id)} />
           </div>
         );
       },
