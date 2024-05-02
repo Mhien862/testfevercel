@@ -6,52 +6,39 @@ import { CheckCircleOutlined, WarningOutlined } from "@ant-design/icons";
 
 const Login = () => {
   const navigate = useNavigate();
+
   const onFinish = async (values) => {
     if (!values.email || !values.password) return;
     try {
       await loginAPI(values.email, values.password);
-      openNotification();
+      openNotification("success", "LOGIN SUCCESS");
       navigate("/");
     } catch (error) {
       console.log(222, error);
-      notification.open({
-        message: "LOGIN FAIL",
-        icon: (
-          <WarningOutlined
-            style={{
-              color: "#e91010",
-            }}
-          />
-        ),
-      });
+      openNotification("error", "LOGIN FAIL");
     }
   };
 
-  const openNotification = () => {
+  const openNotification = (type, message) => {
     notification.open({
-      message: "LOGIN SUCCESS",
-      icon: (
-        <CheckCircleOutlined
-          style={{
-            color: "#008cff",
-          }}
-        />
-      ),
+      message: message,
+      icon:
+        type === "success" ? (
+          <CheckCircleOutlined style={{ color: "#008cff" }} />
+        ) : (
+          <WarningOutlined style={{ color: "#e91010" }} />
+        ),
     });
   };
 
   return (
     <div className="loginContainer">
-      <h1 className="heading-login">welcome</h1>
+      <h1 className="heading-login">Welcome</h1>
       <h3 className="heading-login">Log in with your working account</h3>
       <Form
         name="basic"
-        style={{
-          width: 400,
-        }}
-        initialValues={{
-          remember: true,
-        }}
+        style={{ width: "100%", maxWidth: 400 }}
+        initialValues={{ remember: true }}
         onFinish={onFinish}
         autoComplete="off"
         layout="vertical"
@@ -59,12 +46,7 @@ const Login = () => {
         <Form.Item
           label="Email"
           name="email"
-          rules={[
-            {
-              required: true,
-              message: "Please input your username!",
-            },
-          ]}
+          rules={[{ required: true, message: "Please input your email!" }]}
         >
           <Input />
         </Form.Item>
@@ -72,17 +54,12 @@ const Login = () => {
         <Form.Item
           label="Password"
           name="password"
-          rules={[
-            {
-              required: true,
-              message: "Please input your password!",
-            },
-          ]}
+          rules={[{ required: true, message: "Please input your password!" }]}
         >
           <Input.Password />
         </Form.Item>
         <div className="button">
-          <Button block type="primary" htmlType="submit" onClick={onFinish}>
+          <Button block type="primary" htmlType="submit">
             Login
           </Button>
           <div style={{ marginTop: 12 }}>
@@ -93,4 +70,5 @@ const Login = () => {
     </div>
   );
 };
+
 export default Login;
