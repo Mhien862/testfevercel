@@ -290,13 +290,13 @@ const Event = () => {
       title: "Action",
       key: "action",
 
-      render: (_, param2, index) => {
-        if (param2?.isCreate || param2?._id === editId) {
+      render: (_, record, index) => {
+        if (record?.isCreate || record?._id === editId) {
           return (
             <div>
               <Button
                 type="link"
-                onClick={() => handleSave(param2?.isCreate, param2._id)}
+                onClick={() => handleSave(record?.isCreate, record._id)}
               >
                 <CheckOutlined />
               </Button>
@@ -308,12 +308,12 @@ const Event = () => {
         }
         return (
           <div>
-            <Link to={`/event/detail/${param2._id}`} disabled={isCreate}>
+            <Link to={`/event/detail/${record._id}`} disabled={isCreate}>
               <EyeOutlined />
             </Link>
             <Button
               type="link"
-              onClick={() => handleEdit(param2)}
+              onClick={() => handleEdit(record)}
               disabled={isCreate}
             >
               <EditOutlined
@@ -334,14 +334,14 @@ const Event = () => {
       title: "Upload",
       dataIndex: "upload",
       key: "upload",
-      render: (_, param2) => {
-        if (!param2?.isCreate) {
+      render: (_, record) => {
+        if (!record?.isCreate) {
           return (
             <div>
               <Button
                 type="primary"
                 onClick={() => {
-                  navigate(`/event/post/${param2._id}`);
+                  navigate(`/event/post/${record._id}`);
                 }}
               >
                 Upload
@@ -371,14 +371,14 @@ const Event = () => {
   });
 
   return (
-    <div className="profile" style={{ marginTop: 30, padding: "0 40px" }}>
+    <div className="profile" style={{ marginTop: 30, padding: "0 20px" }}>
       <div>
         <Row gutter={24} justify="space-between" align="middle">
-          <Col span={6}>
+          <Col span={24}>
             <h2>List Event</h2>
           </Col>
-          <Col span={12}>
-            <Space>
+          <Col span={24}>
+            <Space direction="vertical" style={{ width: "100%" }}>
               <Select
                 defaultValue="Name"
                 onChange={(value) => setQuery({ ...query, name: value })}
@@ -391,13 +391,13 @@ const Event = () => {
                 onChange={(e) =>
                   setQuery({ ...query, keyword: e.target.value })
                 }
-                style={{ width: 200 }}
               />
             </Space>
           </Col>
-          <Col span={6} style={{ textAlign: "right" }}>
+          <Col span={24} style={{ textAlign: "right" }}>
             <Button
               type="primary"
+              block
               disabled={isCreate || !!editId}
               onClick={handleCreate}
             >
@@ -415,10 +415,10 @@ const Event = () => {
           }}
           dataSource={events}
           columns={mergedColumns}
-          scroll={{ x: 1500 }}
           pagination={pagination}
           onChange={onTableChange}
           rowKey="_id"
+          scroll={{ x: 1200 }}
         />
       </Form>
     </div>
