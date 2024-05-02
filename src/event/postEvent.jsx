@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Form, Button, Upload, Radio, Checkbox, notification } from "antd";
 import { InboxOutlined, UploadOutlined } from "@ant-design/icons";
 import { CheckCircleOutlined } from "@ant-design/icons";
@@ -8,7 +8,8 @@ import { uploadImageEventAPI } from "../services/EventService";
 const PostForm = () => {
   const [loading, setLoading] = useState(false);
   const [fileList, setFileList] = useState();
-  const [isSelected, setIsSelected] = useState(false); // Thêm isSelected state
+  const [isSelected, setIsSelected] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true); // State cho trạng thái của nút "New Post"
   const normFile = (e) => {
     console.log("Upload event:", e);
     if (Array.isArray(e)) {
@@ -26,30 +27,20 @@ const PostForm = () => {
   const onFinish = async (values) => {
     const formData = new FormData();
     const { _id } = JSON.parse(localStorage.getItem("userProfile"));
-    // fileList.forEach(c => {
-    //   formData.append("files", file);
-    // });
 
     values.upload.forEach((i) => {
       console.log(i);
       formData.append("files", i.originFileObj);
     });
 
-    console.log();
-
     formData.append("Faculty", values.faculty);
-    formData.append("isSelected", isSelected); // Thêm isSelected vào formData
+    formData.append("", isSelected);
     formData.append("_id", _id);
     setLoading(true);
     try {
-      // Here you can make an API call to post the data to the social network
-      // Replace the following with your actual API call
-      console.log("Posting data:", values);
-      // Example API call using fetch
       const eventId = pathname.split("/").find((item, index) => {
         if (index === 3) return item;
       });
-      console.log(event);
 
       const response = await uploadImageEventAPI(eventId, formData);
       console.log(response);
@@ -96,6 +87,11 @@ const PostForm = () => {
     fileList,
   };
 
+  // Cập nhật trạng thái của nút "New Post" dựa trên giá trị của isSelected
+  React.useEffect(() => {
+    setIsButtonDisabled(!isSelected);
+  }, [isSelected]);
+
   return (
     <Form
       name="postForm"
@@ -108,15 +104,6 @@ const PostForm = () => {
           <Radio.Button value="Business">Business</Radio.Button>
           <Radio.Button value="Design">Design</Radio.Button>
         </Radio.Group>
-      </Form.Item>
-
-      <Form.Item label="Check if selected">
-        <Checkbox
-          checked={isSelected}
-          onChange={(e) => setIsSelected(e.target.checked)}
-        >
-          Is Selected
-        </Checkbox>
       </Form.Item>
 
       <Form.Item
@@ -151,8 +138,25 @@ const PostForm = () => {
           </Upload.Dragger>
         </Form.Item>
       </Form.Item>
+
+      <Form.Item label="">
+        <Checkbox
+          checked={isSelected}
+          onChange={(e) => setIsSelected(e.target.checked)}
+        >
+          I agree to the terms and conditions
+        </Checkbox>
+      </Form.Item>
+
+      {/* Sử dụng isButtonDisabled để điều chỉnh thuộc tính disabled của nút "New Post" */}
       <Form.Item>
-        <Button block type="primary" htmlType="submit" loading={loading}>
+        <Button
+          block
+          type="primary"
+          htmlType="submit"
+          loading={loading}
+          disabled={isButtonDisabled}
+        >
           Post
         </Button>
       </Form.Item>

@@ -396,7 +396,11 @@ const Event = () => {
             </Space>
           </Col>
           <Col span={6} style={{ textAlign: "right" }}>
-            <Button disabled={isCreate || !!editId} onClick={handleCreate}>
+            <Button
+              type="primary"
+              disabled={isCreate || !!editId}
+              onClick={handleCreate}
+            >
               Create Event
             </Button>
           </Col>
@@ -411,6 +415,7 @@ const Event = () => {
           }}
           dataSource={events}
           columns={mergedColumns}
+          scroll={{ x: 1500 }}
           pagination={pagination}
           onChange={onTableChange}
           rowKey="_id"
