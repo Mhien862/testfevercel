@@ -48,6 +48,15 @@ const App = () => {
     });
   };
 
+  const openInNewTab = (url) => {
+    const newWindow = window.open(url, "_blank");
+    if (newWindow) {
+      newWindow.focus();
+    } else {
+      alert("Please allow popups for this website");
+    }
+  };
+
   const renderFiles = (files) => {
     return files.map((file, fileIndex) => {
       if (file.mimetype.startsWith("image/")) {
@@ -58,7 +67,7 @@ const App = () => {
       ) {
         return (
           <div key={fileIndex}>
-            <a href={file.path} download>
+            <a href="#" onClick={() => openInNewTab(file.path)}>
               <FileOutlined style={{ fontSize: 20, marginRight: 8 }} />
               <Text type="secondary">{file.originalname}</Text>
             </a>
