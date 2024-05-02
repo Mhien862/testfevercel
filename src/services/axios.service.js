@@ -25,18 +25,18 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-// axiosInstance.interceptors.response.use(
-//   function (res) {
-//     return res;
-//   },
-//   function (error) {
-//     // Do something with request error
-//     if (error.response.status === 401) {
-//       console.log("error");
-//       window.location.href = "/login";
-//     }
-//     return Promise.reject(error);
-//   }
-//);
+axiosInstance.interceptors.response.use(
+  function (res) {
+    return res;
+  },
+  function (error) {
+    // Do something with request error
+    if (error.response.status === 401) {
+      console.log("error");
+      window.location.href = "/login";
+    }
+    return Promise.reject(error);
+  }
+);
 
 export default axiosInstance;
