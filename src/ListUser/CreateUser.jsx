@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Form, Input, Button, notification } from "antd";
+import { Form, Input, Button, notification, Select } from "antd";
 import { useNavigate } from "react-router-dom";
 import {
   SmileOutlined,
@@ -7,6 +7,8 @@ import {
   WarningOutlined,
 } from "@ant-design/icons";
 import { userAPI } from "../services/UserService";
+
+const { Option } = Select;
 
 const Signup = () => {
   const [form] = Form.useForm();
@@ -42,6 +44,16 @@ const Signup = () => {
     }
   };
 
+  const rolesData = [
+    "marketing manager",
+    "marketing coordinator",
+    "guest",
+    "student",
+    "admin",
+  ];
+
+  const facultiesData = ["IT", "Business", "Design"];
+
   return (
     <div style={{ padding: 20 }}>
       <div style={{ maxWidth: 400, margin: "auto" }}>
@@ -65,7 +77,7 @@ const Signup = () => {
               },
             ]}
           >
-            <Input />
+            <Input placeholder="Enter your username" />
           </Form.Item>
           <Form.Item
             label="Role"
@@ -73,11 +85,15 @@ const Signup = () => {
             rules={[
               {
                 required: true,
-                message: "Please input your role!",
+                message: "Please select a role!",
               },
             ]}
           >
-            <Input />
+            <Select placeholder="Select a role">
+              {rolesData.map((role) => (
+                <Option key={role}>{role}</Option>
+              ))}
+            </Select>
           </Form.Item>
           <Form.Item
             label="Faculty"
@@ -85,11 +101,15 @@ const Signup = () => {
             rules={[
               {
                 required: true,
-                message: "Please input your faculty!",
+                message: "Please select a faculty!",
               },
             ]}
           >
-            <Input />
+            <Select placeholder="Select a faculty">
+              {facultiesData.map((faculty) => (
+                <Option key={faculty}>{faculty}</Option>
+              ))}
+            </Select>
           </Form.Item>
           <Form.Item
             label="Email"
@@ -102,7 +122,7 @@ const Signup = () => {
               },
             ]}
           >
-            <Input />
+            <Input placeholder="Example@gmail.com" />
           </Form.Item>
           <Form.Item
             label="Password"
@@ -114,7 +134,7 @@ const Signup = () => {
               },
             ]}
           >
-            <Input.Password />
+            <Input.Password placeholder="Enter your password" />
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit" style={{ width: "100%" }}>

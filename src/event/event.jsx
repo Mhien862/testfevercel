@@ -411,6 +411,7 @@ const Event = () => {
           }}
           dataSource={events}
           columns={mergedColumns}
+          scroll={{ x: 1500 }}
           pagination={pagination}
           onChange={onTableChange}
           rowKey="_id"
