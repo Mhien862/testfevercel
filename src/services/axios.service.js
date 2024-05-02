@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-   baseURL: "https://enterprise-web-software-development.onrender.com",
+  baseURL: "https://enterprise-web-software-development.onrender.com",
   // baseURL: "http://localhost:1000",
 
   // withCredentials: true,
@@ -21,6 +21,20 @@ axiosInstance.interceptors.request.use(
   },
   function (error) {
     // Do something with request error
+    return Promise.reject(error);
+  }
+);
+
+axiosInstance.interceptors.response.use(
+  function (res) {
+    return res;
+  },
+  function (error) {
+    // Do something with request error
+    if (error.response.status === 401) {
+      console.log("error");
+      window.location.href = "/login";
+    }
     return Promise.reject(error);
   }
 );
