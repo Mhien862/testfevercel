@@ -22,7 +22,7 @@ const App = () => {
 
   const navigate = useNavigate();
   const handleCreate = () => {
-    navigate("/contribute");
+    navigate("/event");
   };
 
   const handleLike = (index) => {
