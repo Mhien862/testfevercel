@@ -105,18 +105,20 @@ const Home = () => {
 
   return (
     <div style={{ padding: 12 }}>
-      <h1>Statistics</h1>
+      <h1 style={{ fontSize: "1.5rem", textAlign: "center" }}>Statistics</h1>
       <div
         style={{
           display: "flex",
-          gap: 32,
-          width: "100%",
-          justifyContent: "space-between",
+          justifyContent: "center",
+          flexWrap: "wrap",
+          gap: "1rem",
         }}
       >
-        <div style={{ textAlign: "center" }}>
-          <h3>Contributions Per Faculty</h3>
-          <BarChart width={400} height={400} data={[contributions]}>
+        <div>
+          <h3 style={{ fontSize: "1.2rem", textAlign: "center" }}>
+            Contributions Per Faculty
+          </h3>
+          <BarChart width={350} height={300} data={[contributions]}>
             <XAxis dataKey="name" />
             <YAxis />
             <Tooltip />
@@ -124,9 +126,11 @@ const Home = () => {
             {renderContributionBars()}
           </BarChart>
         </div>
-        <div style={{ textAlign: "center" }}>
-          <h3>Percentage Per Faculty</h3>
-          <PieChart width={400} height={400}>
+        <div>
+          <h3 style={{ fontSize: "1.2rem", textAlign: "center" }}>
+            Percentage Per Faculty
+          </h3>
+          <PieChart width={350} height={300}>
             <Pie
               data={percentage}
               dataKey="value"
@@ -144,9 +148,11 @@ const Home = () => {
             <Legend />
           </PieChart>
         </div>
-        <div style={{ textAlign: "center" }}>
-          <h3>Students Count Per Faculty</h3>
-          <PieChart width={400} height={400}>
+        <div>
+          <h3 style={{ fontSize: "1.2rem", textAlign: "center" }}>
+            Students Count Per Faculty
+          </h3>
+          <PieChart width={350} height={300}>
             <Pie
               data={students}
               dataKey="value"
