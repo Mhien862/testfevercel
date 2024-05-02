@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Button, Card, Image, List, Tooltip } from "antd";
+import { Button, Card, Image, List, Tooltip, Typography } from "antd";
 import axiosInstance from "../services/axios.service";
-import { CommentOutlined, LikeOutlined } from "@ant-design/icons";
+import { CommentOutlined, LikeOutlined, FileOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+
+const { Text } = Typography;
 
 const App = () => {
   const [data, setData] = useState([]);
@@ -46,57 +48,63 @@ const App = () => {
     });
   };
 
+  const renderFiles = (files) => {
+    return files.map((file, fileIndex) => {
+      if (file.mimetype.startsWith("image/")) {
+        return <Image key={fileIndex} src={file.path} width={200} />;
+      } else if (
+        file.mimetype ===
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+      ) {
+        return (
+          <div key={fileIndex}>
+            <a href={file.path} download>
+              <FileOutlined style={{ fontSize: 20, marginRight: 8 }} />
+              <Text type="secondary">{file.originalname}</Text>
+            </a>
+          </div>
+        );
+      }
+      return null;
+    });
+  };
+
   const renderCards = () => {
     if (data && data.length > 0) {
       return data.map((item, index) => (
-        <Card key={item._id} style={{ marginBottom: 20 }}>
-          {/* Username */}
-          <p>USERNAME: {item.username}</p>
-
-          {/* Files */}
-          <List
-            itemLayout="horizontal"
-            dataSource={item.files}
-            renderItem={(file) => (
-              <List.Item>
-                <List.Item.Meta
-                  avatar={
-                    file.mimetype.startsWith("image/") ? (
-                      <Image src={file.path} width={200} />
-                    ) : file.mimetype === "application/msword" ? (
-                      <Image
-                        src="path_to_doc_icon" // Provide path to a doc icon image
-                        width={200}
-                        alt="doc"
-                      />
-                    ) : null
-                  }
-                  title={file.originalname}
-                />
-                <Tooltip title={item.liked ? "Unlike" : "Like"}>
-                  <Button
-                    icon={<LikeOutlined />}
-                    type={item.liked ? "primary" : "default"}
-                    onClick={() => handleLike(index)}
-                  >
-                    {item.liked ? "Liked" : "Like"}
-                  </Button>
-                </Tooltip>
-                <Tooltip title={item.commented ? "Hide comment" : "Comment"}>
-                  <Button
-                    icon={<CommentOutlined />}
-                    type={item.commented ? "primary" : "default"}
-                    onClick={() => handleComment(index)}
-                  >
-                    {item.commented ? "Commented" : "Comment"}
-                  </Button>
-                </Tooltip>
-                {item.commented && (
-                  <Comment content={<p>Your comment content here...</p>} />
-                )}
-              </List.Item>
-            )}
+        <Card key={item._id} style={{ marginBottom: "1cm" }}>
+          <Card.Meta
+            avatar={<Image src={item.avatar} />}
+            title={item.username}
+            description={item.time}
           />
+          <div>
+            <p>{item.content}</p>
+            {renderFiles(item.files)}
+          </div>
+          <div>
+            <Tooltip title={item.liked ? "Unlike" : "Like"}>
+              <Button
+                icon={<LikeOutlined />}
+                type={item.liked ? "primary" : "default"}
+                onClick={() => handleLike(index)}
+              >
+                {item.liked ? "Liked" : "Like"}
+              </Button>
+            </Tooltip>
+            <Tooltip title={item.commented ? "Hide comment" : "Comment"}>
+              <Button
+                icon={<CommentOutlined />}
+                type={item.commented ? "primary" : "default"}
+                onClick={() => handleComment(index)}
+              >
+                {item.commented ? "Commented" : "Comment"}
+              </Button>
+            </Tooltip>
+            {item.commented && (
+              <Comment content={<p>Your comment content here...</p>} />
+            )}
+          </div>
         </Card>
       ));
     } else {
@@ -105,13 +113,8 @@ const App = () => {
   };
 
   return (
-    <div style={{ padding: 20 }}>
-      <Button
-        block
-        onClick={handleCreate}
-        type="primary"
-        style={{ marginBottom: 20 }}
-      >
+    <div style={{ border: "1px solid #e0e0e0", padding: "20px" }}>
+      <Button onClick={handleCreate} type="primary" block>
         New Post
       </Button>
       {renderCards()}
