@@ -53,14 +53,16 @@ const App = () => {
       if (file.mimetype.startsWith("image/")) {
         return <Image key={fileIndex} src={file.path} width={200} />;
       } else if (
+        // Download for specific mimetypes (e.g., documents, PDFs)
         file.mimetype ===
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+        file.mimetype === "application/pdf" // Add other desired mimetypes
       ) {
         return (
           <div key={fileIndex}>
-            <a href={file.path} target="_blank" download>
+            <a href={file.path} download={file.path}>
               {" "}
-              {/* Thêm target="_blank" ở đây */}
+              {/* Set download attribute */}
               <FileOutlined style={{ fontSize: 20, marginRight: 8 }} />
               <Text type="secondary">{file.originalname}</Text>
             </a>
@@ -123,5 +125,4 @@ const App = () => {
     </div>
   );
 };
-
 export default App;
