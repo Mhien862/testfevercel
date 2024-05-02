@@ -396,7 +396,11 @@ const Event = () => {
             </Space>
           </Col>
           <Col span={6} style={{ textAlign: "right" }}>
-            <Button disabled={isCreate || !!editId} onClick={handleCreate}>
+            <Button
+              type="primary"
+              disabled={isCreate || !!editId}
+              onClick={handleCreate}
+            >
               Create Event
             </Button>
           </Col>
