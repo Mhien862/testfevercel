@@ -98,13 +98,13 @@ const PostForm = () => {
       initialValues={{ remember: true }}
       onFinish={onFinish}
     >
-      <Form.Item name="faculty" label="Faculty">
+      {/* <Form.Item name="faculty" label="Faculty">
         <Radio.Group onChange={onChange} defaultValue="IT">
           <Radio.Button value="IT">IT</Radio.Button>
           <Radio.Button value="Business">Business</Radio.Button>
           <Radio.Button value="Design">Design</Radio.Button>
         </Radio.Group>
-      </Form.Item>
+      </Form.Item> */}
 
       <Form.Item
         name="upload"
