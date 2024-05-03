@@ -71,7 +71,7 @@ const User = () => {
 
   const [query, setQuery] = useState({
     page: 1,
-    limit: 5,
+    limit: 5, // Change limit to 5
     name: "",
     email: "",
     status: "",
@@ -163,7 +163,7 @@ const User = () => {
         scroll={{ x: 1500 }}
         pagination={{
           current: pagination.page,
-          pageSize: pagination.limit,
+          pageSize: 5,
           total: pagination.total,
         }}
         onChange={onTableChange}
