@@ -54,6 +54,17 @@ const Signup = () => {
 
   const facultiesData = ["IT", "Business", "Design"];
 
+  const validatePassword = (_, value) => {
+    const regex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!value || regex.test(value)) {
+      return Promise.resolve();
+    }
+    return Promise.reject(
+      "Password must contain at least one lowercase letter, one uppercase letter, one number, one special character, and be at least 8 characters long."
+    );
+  };
+
   return (
     <div style={{ padding: 20 }}>
       <div style={{ maxWidth: 400, margin: "auto" }}>
@@ -131,6 +142,9 @@ const Signup = () => {
               {
                 required: true,
                 message: "Please input your password!",
+              },
+              {
+                validator: validatePassword,
               },
             ]}
           >
